@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "awsamplifytutorial",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authawsamplifytutorial09335363",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
