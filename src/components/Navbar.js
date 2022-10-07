@@ -4,17 +4,18 @@ import { AuthContext } from '../context/auth';
 
 const Navbar = () => {
 
-    const { isLoggedIn, logOutUser } = useContext(AuthContext)
+    const { isLoggedIn, logOutUser, setRedirectTo } = useContext(AuthContext)
 
     return (
         <div>
             <ul>
                 <li><Link to='/'>Home</Link></li>
-                <li><Link to='/protected-page'>Protected Page</Link></li>
-                <li><Link to='/Login'>Login</Link></li>
-                <li><button onClick={logOutUser}>Logout</button></li>
+                <li onClick={() => { setRedirectTo('/protected-page') }}><Link to='/protected-page'>Protected Page</Link></li>
+                {
+                    isLoggedIn ? <li><button onClick={logOutUser}>Logout</button></li> :
+                        <li><Link to='/Login'>Login</Link></li>
+                }
             </ul>
-
         </div>
     );
 };

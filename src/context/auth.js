@@ -1,5 +1,6 @@
 import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AuthContext = React.createContext()
 
@@ -7,7 +8,11 @@ function AuthProviderWrapper(props) {
 
     const [userContext, setContextUser] = useState(null)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true)
+    const [redirectTo, setRedirectTo] = useState('/')
+    const [wrongCredentialsMsg, setWrongCredentialsMsg] = useState('')
+
+    const navigate = useNavigate()
 
     const logOutUser = () => {
         Auth.signOut()
@@ -16,7 +21,12 @@ function AuthProviderWrapper(props) {
     }
 
     const signUp = async (email, password, username) => {
-        await Auth.signUp({ email, password, username })
+        try {
+            await Auth.signUp({ email, password, username })
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     const confirmSignUp = async (email, password, authCode) => {
@@ -26,7 +36,19 @@ function AuthProviderWrapper(props) {
     }
 
     const signIn = async (email, password) => {
-        await Auth.signIn(email, password)
+        try {
+            await Auth.signIn(email, password)
+            const currentUser = await Auth.currentAuthenticatedUser()
+            if (currentUser) {
+                verifyUser()
+                setWrongCredentialsMsg('')
+                navigate(redirectTo)
+            }
+        }
+        catch (err) {
+            console.log(err);
+            setWrongCredentialsMsg('Sry, either E-Mail or Password are not correct!')
+        }
     }
 
     const verifyUser = async () => {
@@ -37,12 +59,14 @@ function AuthProviderWrapper(props) {
                 setContextUser(currentUser)
                 setIsLoggedIn(true)
                 setIsLoading(false)
+                console.log('user logged in');
             }
         }
         catch {
             setContextUser(null)
             setIsLoggedIn(false)
             setIsLoading(false)
+            console.log('no user');
         }
     }
 
@@ -51,7 +75,7 @@ function AuthProviderWrapper(props) {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, userContext, isLoading, logOutUser, verifyUser, signUp, signIn, confirmSignUp}}>
+        <AuthContext.Provider value={{ isLoggedIn, userContext, isLoading, logOutUser, verifyUser, signUp, signIn, confirmSignUp, setRedirectTo, wrongCredentialsMsg }}>
             {props.children}
         </AuthContext.Provider>
     )

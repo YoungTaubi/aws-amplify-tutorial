@@ -1,7 +1,6 @@
-import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
@@ -11,6 +10,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 
 
 function App() {
+
   return (
     <div className="App">
       <Layout>
