@@ -1,14 +1,32 @@
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import ProtectedPage from './pages/ProtectedPage';
+import Layout from './components/Layout';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World</h1>
+      <Layout>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signUp' element={<SignUp />} />
+          <Route path='/protected-page' element={
+            <ProtectedRoute>
+              <ProtectedPage />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </Layout>
     </div>
   );
 }
 
-export default withAuthenticator(App);
+export default (App);
