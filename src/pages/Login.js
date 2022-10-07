@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "../context/auth"
 import ResetPassword from "../components/ResetPassword"
+import { Link } from 'react-router-dom';
 
 export default function Login() {
 
@@ -16,6 +17,10 @@ export default function Login() {
         signIn(email, password)
     }
 
+    const closeModal = () => {
+        setForgotPasswordModal(false)
+    }
+
     return (
         <>
             <form onSubmit={handleSubit}>
@@ -24,11 +29,14 @@ export default function Login() {
                 <button>Login</button>
             </form>
             <p>{wrongCredentialsMsg}</p>
+            <p>Don´t have an account yet?</p>
+            <button><Link to='/signup'>Sign Up</Link></button>
             <p onClick={() => setForgotPasswordModal(true)}>Did you forget your password?</p> 
             {
                 forgotPasswordModal && <ResetPassword 
                 email={email} 
                 setEmail={setEmail}
+                closeModal={closeModal}
                 /> 
             }           
         </>
