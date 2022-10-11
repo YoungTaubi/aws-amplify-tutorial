@@ -1,0 +1,16 @@
+{
+  "resourceName": "s30a838e94",
+  "policyUUID": "0a838e94",
+  "bucketName": "profile-pics",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
