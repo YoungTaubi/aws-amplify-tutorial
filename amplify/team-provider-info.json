@@ -13,13 +13,21 @@
     },
     "categories": {
       "auth": {
-        "awsamplifytutorial09335363": {}
+        "awsamplifytutorial09335363": {},
+        "userPoolGroups": {}
       },
       "api": {
-        "awsamplifytutorial": {}
+        "awsamplifytutorial": {},
+        "AdminQueries": {}
       },
       "storage": {
         "s30a838e94": {}
+      },
+      "function": {
+        "AdminQueries2a666c2b": {
+          "deploymentBucketName": "amplify-awsamplifytutorial-dev-174250-deployment",
+          "s3Key": "amplify-builds/AdminQueries2a666c2b-306367374b494b4d7950-build.zip"
+        }
       }
     }
   }
