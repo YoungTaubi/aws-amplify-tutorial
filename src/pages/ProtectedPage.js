@@ -52,6 +52,7 @@ const ProtectedPage = () => {
         getProfilePic()
     }, [])
     
+    console.log('test');
 
     return (
         <>
