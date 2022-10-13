@@ -51,6 +51,8 @@ const ProtectedPage = () => {
     useEffect(() => {
         getProfilePic()
     }, [])
+    
+    console.log('test');
 
     return (
         <>
@@ -72,6 +74,7 @@ const ProtectedPage = () => {
                     style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover" }}
                 />
             </div>
+            
         </>
     );
 }
