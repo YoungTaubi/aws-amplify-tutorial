@@ -13,7 +13,9 @@
     },
     "categories": {
       "auth": {
-        "awsamplifytutorial09335363": {}
+        "awsamplifytutorial09335363": {
+          "googleClientId": "522211646444-17d0k8b1lb1q24tfr42hiab9kpmbtprc.apps.googleusercontent.com"
+        }
       },
       "api": {
         "awsamplifytutorial": {}

@@ -32,7 +32,6 @@ function AuthProviderWrapper(props) {
     const confirmSignUp = async (email, password, authCode) => {
         await Auth.confirmSignUp(email, authCode)
         signIn(email, password)
-
     }
 
     const signIn = async (email, password) => {
@@ -73,6 +72,10 @@ function AuthProviderWrapper(props) {
     useEffect(() => {
         verifyUser()
     }, [])
+
+    // useEffect(() => {
+    //     console.log(userContext);
+    // }, [userContext])
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, userContext, isLoading, logOutUser, verifyUser, signUp, signIn, confirmSignUp, setRedirectTo, wrongCredentialsMsg }}>
