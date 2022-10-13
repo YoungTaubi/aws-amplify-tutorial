@@ -4,7 +4,7 @@ import { AuthContext } from "../context/auth"
 
 const ProtectedPage = () => {
 
-    const { userContext, verifyUser } = useContext(AuthContext)
+    // const { userContext, verifyUser } = useContext(AuthContext)
 
     // const [name, setName] = useState(userContext?.attributes.name)
     // const [address, setAddress] = useState(userContext?.attributes.address)
