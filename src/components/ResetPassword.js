@@ -58,7 +58,6 @@ const ResetPassword = ({ email, setEmail, closeModal }) => {
                 setEvalPwdMsg('The password must be at least 8 characters long and contain a capital letter, special characters and a number')
             }
         }
-
     }
 
     useEffect(() => {

@@ -20,9 +20,9 @@ function AuthProviderWrapper(props) {
         setContextUser(null)
     }
 
-    const signUp = async (email, password, username) => {
+    const signUp = async (email, password) => {
         try {
-            await Auth.signUp({ email, password, username })
+            await Auth.signUp({ username: email, password })
         }
         catch (err) {
             console.log(err);
@@ -31,7 +31,7 @@ function AuthProviderWrapper(props) {
 
     const confirmSignUp = async (email, password, authCode) => {
         await Auth.confirmSignUp(email, authCode)
-        await Auth.signIn(email, password)
+        signIn(email, password)
 
     }
 
