@@ -55,7 +55,8 @@ function AuthProviderWrapper(props) {
         try {
             const currentUser = await Auth.currentAuthenticatedUser()
             if (currentUser) {
-                setContextUser(currentUser)
+                const userInfo = await Auth.currentUserInfo()
+                setContextUser(userInfo)
                 setIsLoggedIn(true)
                 setIsLoading(false)
                 console.log('user logged in');

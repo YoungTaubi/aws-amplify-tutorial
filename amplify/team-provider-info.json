@@ -19,6 +19,9 @@
       },
       "api": {
         "awsamplifytutorial": {}
+      },
+      "storage": {
+        "profilepictures": {}
       }
     }
   }

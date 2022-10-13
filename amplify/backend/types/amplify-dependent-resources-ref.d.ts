@@ -7,13 +7,20 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolArn": "string",
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
-            "AppClientID": "string"
+            "AppClientID": "string",
+            "GoogleWebClient": "string"
         }
     },
     "api": {
         "awsamplifytutorial": {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
+        }
+    },
+    "storage": {
+        "profilepictures": {
+            "BucketName": "string",
+            "Region": "string"
         }
     }
 }
