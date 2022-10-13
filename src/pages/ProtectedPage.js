@@ -20,7 +20,7 @@ const ProtectedPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = await Auth.currentAuthenticatedUser()
-        const userPicName = 'userPic-'+userContext.id  
+        const userPicName = 'userPic-' + userContext.id
         await Storage.put(userPicName, profilePic, {
             level: 'protected'
         })
@@ -36,11 +36,11 @@ const ProtectedPage = () => {
         Storage.get(userContext.attributes.picture, {
             level: 'protected'
         })
-        .then(picture => {
-            setProfilePic(picture)
-            console.log(picture);
-        })
-        .catch(err => console.log(err))
+            .then(picture => {
+                setProfilePic(picture)
+                console.log(picture);
+            })
+            .catch(err => console.log(err))
     }
 
     useEffect(() => {
@@ -63,7 +63,10 @@ const ProtectedPage = () => {
                 <p>User Name: {userContext?.attributes.name}</p>
                 <p>User Address: {userContext?.attributes.address}</p>
                 <p>Pic Address: {userContext?.attributes.picture}</p>
-                <img src={profilePic}/>
+                <img src={profilePic}
+                    alt={userContext?.attributes.name + +'Profile Picture'}
+                    style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover"}}
+                />
             </div>
         </>
     );
