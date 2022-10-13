@@ -8,7 +8,8 @@ const ProtectedPage = () => {
 
     const [name, setName] = useState(userContext?.attributes.name)
     const [address, setAddress] = useState(userContext?.attributes.address)
-    const [profilePic, setProfilePic] = useState(null)
+    const [profilePicURL, setProfilePicURL] = useState('')
+    const [profilePicFile, setProfilePicFile] = useState(null)
 
     Storage.configure({
         AWSS3: {
@@ -19,9 +20,9 @@ const ProtectedPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const user = await Auth.currentAuthenticatedUser()
         const userPicName = 'userPic-' + userContext.id
-        await Storage.put(userPicName, profilePic, {
+        const user = await Auth.currentAuthenticatedUser()
+        await Storage.put(userPicName, profilePicFile, {
             level: 'protected'
         })
         await Auth.updateUserAttributes(user, {
@@ -29,6 +30,7 @@ const ProtectedPage = () => {
             'address': address,
             'picture': userPicName
         });
+        getProfilePic()
         verifyUser()
     }
 
@@ -37,7 +39,7 @@ const ProtectedPage = () => {
             level: 'protected'
         })
             .then(picture => {
-                setProfilePic(picture)
+                setProfilePicURL(picture)
                 console.log(picture);
             })
             .catch(err => console.log(err))
@@ -53,7 +55,7 @@ const ProtectedPage = () => {
                 <form onSubmit={handleSubmit}>
                     <input type='text' onChange={e => { e.target.value.length > 0 && setName(e.target.value) }} placeholder='Name' />
                     <input type='text' onChange={e => { e.target.value.length > 0 && setAddress(e.target.value) }} placeholder='Address' />
-                    <input type='file' onChange={e => setProfilePic(e.target.files[0])} />
+                    <input type='file' name='picFile' onChange={e => {e.target.files[0] && setProfilePicFile(e.target.files[0])}} />
                     <button type='submit'>Save Changes</button>
                 </form>
             </div>
@@ -63,9 +65,9 @@ const ProtectedPage = () => {
                 <p>User Name: {userContext?.attributes.name}</p>
                 <p>User Address: {userContext?.attributes.address}</p>
                 <p>Pic Address: {userContext?.attributes.picture}</p>
-                <img src={profilePic}
-                    alt={userContext?.attributes.name + +'Profile Picture'}
-                    style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover"}}
+                <img src={profilePicURL}
+                    alt={userContext?.attributes.name + ' Profile Picture'}
+                    style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover" }}
                 />
             </div>
         </>
