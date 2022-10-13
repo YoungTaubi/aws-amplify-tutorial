@@ -26,63 +26,23 @@
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-      "address",
-      "name",
-      "picture",
       "email"
     ],
     "userpoolClientReadAttributes": [
-      "address",
-      "birthdate",
-      "email",
-      "name",
-      "picture"
+      "email"
     ],
     "userpoolClientLambdaRole": "awsamp09335363_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": true,
+    "userpoolClientSetAttributes": false,
     "sharedId": "09335363",
     "resourceName": "awsamplifytutorial09335363",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "manual",
+    "useDefault": "default",
     "usernameAttributes": [
       "email"
     ],
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": [],
-    "thirdPartyAuth": true,
-    "authProviders": [
-      "accounts.google.com"
-    ],
-    "userPoolGroups": false,
-    "adminQueries": true,
-    "triggers": {},
-    "hostedUI": true,
-    "hostedUIDomainName": "localhost3000",
-    "authProvidersUserPool": [
-      "Google"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "parentStack": {
-      "Ref": "AWS::StackId"
-    },
-    "permissions": [],
-    "adminQueryGroup": "Test",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}"
+    "useEnabledMfas": true
   }
 }
