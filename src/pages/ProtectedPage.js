@@ -9,7 +9,7 @@ const ProtectedPage = () => {
     const [name, setName] = useState(userContext?.attributes.name)
     const [address, setAddress] = useState(userContext?.attributes.address)
     const [profilePicURL, setProfilePicURL] = useState('')
-    const [profilePicFile, setProfilePicFile] = useState(null)
+    const [profilePicFile, setProfilePicFile] = useState('')
 
     Storage.configure({
         AWSS3: {
@@ -22,14 +22,17 @@ const ProtectedPage = () => {
         e.preventDefault()
         const userPicName = 'userPic-' + userContext.id
         const user = await Auth.currentAuthenticatedUser()
-        await Storage.put(userPicName, profilePicFile, {
-            level: 'protected'
-        })
+        if (profilePicFile) {
+            await Storage.put(userPicName, profilePicFile, {
+                level: 'protected'
+            })
+        }
         await Auth.updateUserAttributes(user, {
             'name': name,
             'address': address,
             'picture': userPicName
         });
+        e.target.picFile.value = ''
         getProfilePic()
         verifyUser()
     }
@@ -55,7 +58,7 @@ const ProtectedPage = () => {
                 <form onSubmit={handleSubmit}>
                     <input type='text' onChange={e => { e.target.value.length > 0 && setName(e.target.value) }} placeholder='Name' />
                     <input type='text' onChange={e => { e.target.value.length > 0 && setAddress(e.target.value) }} placeholder='Address' />
-                    <input type='file' name='picFile' onChange={e => {e.target.files[0] && setProfilePicFile(e.target.files[0])}} />
+                    <input type='file' name='picFile' onChange={e => { e.target.files[0] && setProfilePicFile(e.target.files[0]) }} />
                     <button type='submit'>Save Changes</button>
                 </form>
             </div>
@@ -64,7 +67,6 @@ const ProtectedPage = () => {
                 <p>User E-mail: {userContext?.attributes.email}</p>
                 <p>User Name: {userContext?.attributes.name}</p>
                 <p>User Address: {userContext?.attributes.address}</p>
-                <p>Pic Address: {userContext?.attributes.picture}</p>
                 <img src={profilePicURL}
                     alt={userContext?.attributes.name + ' Profile Picture'}
                     style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover" }}
