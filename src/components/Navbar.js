@@ -10,7 +10,7 @@ const Navbar = () => {
         <div>
             <ul>
                 <li><Link to='/'>Home</Link></li>
-                <li onClick={() => { setRedirectTo('/protected-page') }}><Link to='/protected-page'>Protected Page</Link></li>
+                <li onClick={() => { setRedirectTo('protected-page') }}><Link to='/protected-page'>Protected Page</Link></li>
                 {
                     isLoggedIn ? <li><button onClick={logOutUser}>Logout</button></li> :
                         <li><Link to='/Login'>Login</Link></li>

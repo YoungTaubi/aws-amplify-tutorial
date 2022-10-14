@@ -39,9 +39,11 @@ function AuthProviderWrapper(props) {
             await Auth.signIn(email, password)
             const currentUser = await Auth.currentAuthenticatedUser()
             if (currentUser) {
-                verifyUser()
                 setWrongCredentialsMsg('')
-                navigate(redirectTo)
+                verifyUser()
+                .then(() => {
+                    navigate(redirectTo)
+                })
             }
         }
         catch (err) {
