@@ -1,4 +1,4 @@
-import { Auth, Storage } from 'aws-amplify';
+import { Auth, Storage, API } from 'aws-amplify';
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from "../context/auth"
 
@@ -48,10 +48,34 @@ const ProtectedPage = () => {
             .catch(err => console.log(err))
     }
 
+    let nextToken
+
+    async function listEditors() {
+        let apiName = 'AdminQueries';
+        let path = '/listUsers';
+        let myInit = {
+            queryStringParameters: {
+                "groupname": "Editors",
+                "limit": 20,
+                "token": nextToken
+            },
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+            }
+        }
+        const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+        nextToken = NextToken;
+        console.log(rest);
+        return rest;
+    }
+
+    listEditors()
+
     useEffect(() => {
         getProfilePic()
     }, [])
-    
+
     return (
         <>
             <div>
@@ -72,7 +96,7 @@ const ProtectedPage = () => {
                     style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover" }}
                 />
             </div>
-            
+
         </>
     );
 }

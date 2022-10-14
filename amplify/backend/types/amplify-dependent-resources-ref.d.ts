@@ -15,12 +15,25 @@ export type AmplifyDependentResourcesAttributes = {
         "awsamplifytutorial": {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
+        },
+        "AdminQueries": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
         }
     },
     "storage": {
         "profilepictures": {
             "BucketName": "string",
             "Region": "string"
+        }
+    },
+    "function": {
+        "AdminQueries0da4dbbf": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     }
 }

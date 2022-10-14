@@ -18,10 +18,17 @@
         }
       },
       "api": {
-        "awsamplifytutorial": {}
+        "awsamplifytutorial": {},
+        "AdminQueries": {}
       },
       "storage": {
         "profilepictures": {}
+      },
+      "function": {
+        "AdminQueries0da4dbbf": {
+          "deploymentBucketName": "amplify-awsamplifytutorial-dev-174250-deployment",
+          "s3Key": "amplify-builds/AdminQueries0da4dbbf-6a6255523662716c4c69-build.zip"
+        }
       }
     }
   }
