@@ -24,7 +24,7 @@ const ProtectedPage = () => {
         const user = await Auth.currentAuthenticatedUser()
         if (profilePicFile) {
             await Storage.put(userPicName, profilePicFile, {
-                level: 'protected'
+                level: 'public'
             })
         }
         await Auth.updateUserAttributes(user, {
@@ -39,11 +39,10 @@ const ProtectedPage = () => {
 
     const getProfilePic = () => {
         Storage.get(userContext.attributes.picture, {
-            level: 'protected'
+            level: 'public'
         })
             .then(picture => {
                 setProfilePicURL(picture)
-                console.log(picture);
             })
             .catch(err => console.log(err))
     }
@@ -66,11 +65,8 @@ const ProtectedPage = () => {
         }
         const { NextToken, ...rest } = await API.get(apiName, path, myInit);
         nextToken = NextToken;
-        console.log(rest);
         return rest;
     }
-
-    listEditors()
 
     useEffect(() => {
         getProfilePic()

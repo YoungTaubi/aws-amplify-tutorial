@@ -6,6 +6,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import ProtectedPage from './pages/ProtectedPage';
 import Layout from './components/Layout';
+import AllUsers from './pages/AllUsers';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 
@@ -16,6 +17,11 @@ function App() {
       <Layout>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/all-users' element={
+            <ProtectedRoute>
+              <AllUsers />
+            </ProtectedRoute>
+          } />
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/protected-page' element={
