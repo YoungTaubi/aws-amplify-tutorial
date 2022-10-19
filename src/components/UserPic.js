@@ -45,7 +45,6 @@ const UserPic = ({ userName, picTitle }) => {
     }, [])
 
     useEffect(() => {
-        console.log('hallo');
         getProfilePic()
     }, [profilePicURL, picTitle])
 
