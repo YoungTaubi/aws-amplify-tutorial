@@ -1,6 +1,8 @@
 import { Auth, Storage, API } from 'aws-amplify';
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from "../context/auth"
+import placeholderPic from '../assets/1200px-Placeholder_no_text.png'
+import UserPic from '../components/UserPic';
 
 const ProtectedPage = () => {
 
@@ -10,6 +12,7 @@ const ProtectedPage = () => {
     const [address, setAddress] = useState(userContext?.attributes.address)
     const [profilePicURL, setProfilePicURL] = useState('')
     const [profilePicFile, setProfilePicFile] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
     Storage.configure({
         AWSS3: {
@@ -18,33 +21,55 @@ const ProtectedPage = () => {
         }
     })
 
+    const userPicTitle = 'userPic-' + userContext.id
+
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const userPicName = 'userPic-' + userContext.id
         const user = await Auth.currentAuthenticatedUser()
         if (profilePicFile) {
-            await Storage.put(userPicName, profilePicFile, {
+            await Storage.put(userPicTitle, profilePicFile, {
                 level: 'public'
             })
         }
         await Auth.updateUserAttributes(user, {
             'name': name,
             'address': address,
-            'picture': userPicName
+            'picture': userPicTitle
         });
         e.target.picFile.value = ''
         getProfilePic()
         verifyUser()
     }
 
-    const getProfilePic = () => {
-        Storage.get(userContext.attributes.picture, {
-            level: 'public'
-        })
-            .then(picture => {
-                setProfilePicURL(picture)
+    const deleteProfilePic = () => {
+        Storage.remove(userPicTitle)
+        setProfilePicURL(placeholderPic)
+    }
+
+    const getProfilePic = async () => {
+        const allPics = await Storage.list('')
+        if (userPicTitle) {
+            new Promise(resolve => {
+                const checkForUserPic = allPics.some(pic => pic['key'] === userPicTitle)
+                resolve(checkForUserPic)
             })
-            .catch(err => console.log(err))
+                .then((res) => {
+                    if (res) {
+                        Storage.get(userPicTitle, {
+                            level: 'public'
+                        })
+                            .then(picture => {
+                                setProfilePicURL(picture)
+                                setIsLoading(false)
+                            })
+                            .catch(err => console.log(err))
+                    }
+                    else if (!res) {
+                        setProfilePicURL(placeholderPic)
+                        setIsLoading(false)
+                    }
+                })
+        }
     }
 
     let nextToken
@@ -74,6 +99,7 @@ const ProtectedPage = () => {
 
     return (
         <>
+            <h1>Protected Page</h1>
             <div>
                 <form onSubmit={handleSubmit}>
                     <input type='text' onChange={e => { e.target.value.length > 0 && setName(e.target.value) }} placeholder='Name' />
@@ -83,14 +109,19 @@ const ProtectedPage = () => {
                 </form>
             </div>
             <div>
-                <h1>Protected Page</h1>
                 <p>User E-mail: {userContext?.attributes.email}</p>
                 <p>User Name: {userContext?.attributes.name}</p>
                 <p>User Address: {userContext?.attributes.address}</p>
-                <img src={profilePicURL}
-                    alt={userContext?.attributes.name + ' Profile Picture'}
-                    style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover" }}
-                />
+                {isLoading ? <h1>Is loading</h1> :
+                    <>
+                        <img src={profilePicURL}
+                            alt={userContext?.attributes.name + ' Profile Picture'}
+                            style={{ width: "200px", height: "200px", objectFit: "cover" }}
+                        />
+                    </>
+                }
+
+                {profilePicURL && <button onClick={deleteProfilePic}>Remove your profile picture</button>}
             </div>
 
         </>

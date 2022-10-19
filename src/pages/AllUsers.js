@@ -1,10 +1,14 @@
 import { API, Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
+import { UserInfoContext } from '../context/userInfo';
 
 const AllUsers = () => {
 
-    const [allUsers, setAllUsers] = useState([])
+    // const [allUsers, setAllUsers] = useState([])
+
+    const { allUsers, isLoading, setIsLoading } = useContext(UserInfoContext)
+
 
     // let nextToken
 
@@ -28,32 +32,38 @@ const AllUsers = () => {
     //     return rest;
     // }
 
-    const getAllUsers = async () => {
-        let apiName = 'AdminQueries';
-        let path = '/listUsers';
-        let myInit = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-            }
-        }
-        API.get(apiName, path, myInit)
-            .then(resFromApi => {
-                setAllUsers(resFromApi.Users)
-            })
-            .catch(err => console.log(err))
-    }
+    // const getAllUsers = async () => {
+    //     let apiName = 'AdminQueries';
+    //     let path = '/listUsers';
+    //     let myInit = {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+    //         }
+    //     }
+    //     API.get(apiName, path, myInit)
+    //         .then(resFromApi => {
+    //             setAllUsers(resFromApi.Users)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 
-    useEffect(() => {
-        getAllUsers()
-        setTimeout(() => console.log(allUsers), 500)
-    }, [])
+    // useEffect(() => {
+    //     getAllUsers()
+    //     setTimeout(() => console.log(allUsers), 500)
+    // }, [])
 
     return (
         <div>
-            {allUsers.map(user => (
-                <UserCard key={user.Username} userInfo={user}/>
-            ))}
+            <h1>All Users</h1>
+            {isLoading ? <h1>Is Loading</h1> :
+                
+                    allUsers.map(user => (
+                        <UserCard key={user.Username} user={user} />
+                    ))
+                
+            }
+
 
         </div>
     );

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
+import placeholderPic from '../assets/1200px-Placeholder_no_text.png'
 
 const UserPic = ({ userName, picTitle }) => {
 
     const [profilePicURL, setProfilePicURL] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
     Storage.configure({
         AWSS3: {
@@ -12,14 +14,30 @@ const UserPic = ({ userName, picTitle }) => {
         }
     })
 
-    const getProfilePic = () => {
-        Storage.get(picTitle, {
-            level: 'public'
-        })
-            .then(picture => {
-                setProfilePicURL(picture)
+    const getProfilePic = async () => {
+        const allPics = await Storage.list('')
+        if (picTitle) {
+            new Promise(resolve => {
+                const checkForUserPic = allPics.some(pic => pic['key'] === picTitle)
+                resolve(checkForUserPic)
             })
-            .catch(err => console.log(err))
+                .then((res) => {
+                    if (res) {
+                        Storage.get(picTitle, {
+                            level: 'public'
+                        })
+                            .then(picture => {
+                                setProfilePicURL(picture)
+                                setIsLoading(false)
+                            })
+                            .catch(err => console.log(err))
+                    }
+                    else if (!res) {
+                        setProfilePicURL(placeholderPic)
+                        setIsLoading(false)
+                    }
+                })
+        }
     }
 
     useEffect(() => {
@@ -27,17 +45,20 @@ const UserPic = ({ userName, picTitle }) => {
     }, [])
 
     useEffect(() => {
+        console.log('hallo');
         getProfilePic()
-    }, [profilePicURL])
+    }, [profilePicURL, picTitle])
 
     return (
         <div>
-            <img
-                src={profilePicURL}
-                alt={userName + ' Profile Picture'}
-                style={{ border: "red 2px solid", width: "200px", height: "200px", objectFit: "cover" }}
-            />
-
+            {isLoading ? <h1>Is loading</h1> :
+                <>
+                    <img src={profilePicURL}
+                        alt={userName + ' Profile Picture'}
+                        style={{ width: "200px", height: "200px", objectFit: "cover" }}
+                    />
+                </>
+            }
         </div>
     );
 };
